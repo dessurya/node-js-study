@@ -1,3 +1,6 @@
+# my helper
+helper/getConn.js
+
 # Logs
 logs
 *.log
