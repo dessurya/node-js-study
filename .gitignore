@@ -1,5 +1,5 @@
 # my helper
-helper/getConn.js
+helper/mysql/getConn.js
 
 # Logs
 logs

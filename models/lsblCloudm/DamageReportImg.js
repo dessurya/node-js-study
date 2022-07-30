@@ -1,4 +1,4 @@
-const crud = require("../../helper/publicCRUD")
+const crud = require("../../helper/mysql/publicCRUD")
 const db = "lsbl_cloud_dm"
 const table = "damage_report_img"
 
