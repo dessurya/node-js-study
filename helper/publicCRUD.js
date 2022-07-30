@@ -1,3 +1,4 @@
+const { response } = require("express")
 const mysql = require("mysql2/promise")
 const conn = require("./getConn")
 
@@ -10,6 +11,21 @@ buildWhere = async (arr) => {
         })
     }
     return await str_query
+}
+
+selectCount = async (params,subject) => {
+    let str_query = "SELECT COUNT(*) AS countRows FROM "+subject.table
+    str_query += await buildWhere(params.where)
+    try {
+        const confDb = await conn.getConn(subject.db)
+        const openDb = await mysql.createConnection(confDb)
+        const [data] = await openDb.execute(str_query,[])
+        openDb.end()
+        const countRows = data[0].countRows
+        return {str_query,countRows,err:null}
+    } catch (err) {
+        return{str_query,countRows:0,err}
+    }
 }
 
 select = async (params,subject) => {
@@ -31,10 +47,36 @@ select = async (params,subject) => {
         const openDb = await mysql.createConnection(confDb)
         const [data] = await openDb.execute(str_query,[])
         openDb.end()
-        return {str_query,data,err:null}
+        return {err:null,str_query,data}
     } catch (err) {
-        return{str_query,data:null,err}
+        return {err,str_query,data:null}
+    }
+}
+ 
+paginate = async (params,subject) => {
+    params.offset = (params.page-1)*params.limit
+    let getData = null
+    try{ getData = await select(params,subject) }
+    catch (err) { console.log(err) }
+    
+    let countAllData = null
+    try { countAllData = await selectCount(params,subject) } 
+    catch (err) { console.log(err) }
+
+    let to = params.offset+params.limit
+    if (to > countAllData.countRows) { to = countAllData.countRows }
+    let max_page = Math.ceil(countAllData.countRows/params.limit)
+    if (max_page == 0) { max_page = 1}
+    return {
+        err:null,
+        str_query: getData.str_query,
+        from: params.offset+1,
+        to,
+        total:countAllData.countRows,
+        current_page:params.page,
+        last_page:max_page,
+        data: getData.data
     }
 }
 
-module.exports = { select }
+module.exports = { select, paginate }

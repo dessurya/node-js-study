@@ -34,8 +34,8 @@ app.get("/paginate", async (req,res) => {
             }
         ],
         orderbBy: { key:['id_damage_img_global'], value:'DESC' },
-        limit:10,
-        offset:0
+        limit:5,
+        page:2
     }))
 })
 
