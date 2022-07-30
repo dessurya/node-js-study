@@ -22,6 +22,20 @@ app.get("/", async (req,res) => {
     }))
 })
 
+app.get("/count", async (req,res) => {
+    const DamageReportImg = require("./models/lsblCloudm/DamageReportImg")
+    res.json(await DamageReportImg.selectCount({
+        where:[
+            {
+                key:'string_encode',
+                operator:'=',
+                value:'\'N\'',
+                andor:''
+            }
+        ]
+    }))
+})
+
 app.get("/paginate", async (req,res) => {
     const DamageReportImg = require("./models/lsblCloudm/DamageReportImg")
     res.json(await DamageReportImg.paginate({
@@ -37,6 +51,26 @@ app.get("/paginate", async (req,res) => {
         limit:50,
         page:3
     }))
+})
+
+app.get("/first", async (req,res) => {
+    const DamageReportImg = require("./models/lsblCloudm/DamageReportImg")
+    res.json(await DamageReportImg.first({
+        where:[
+            {
+                key:'string_encode',
+                operator:'=',
+                value:'\'N\'',
+                andor:''
+            }
+        ],
+        orderbBy: { key:['id_damage_img_global'], value:'DESC' }
+    }))
+})
+
+app.get("/find", async (req,res) => {
+    const DamageReportImg = require("./models/lsblCloudm/DamageReportImg")
+    res.json(await DamageReportImg.find({ primary: 1471 }))
 })
 
 app.listen(server_port,()=>{

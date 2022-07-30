@@ -33,16 +33,22 @@ const conn = require("./getConn")
     select = async (params,subject) => {
         let str_query = "SELECT * FROM "+subject.table
         str_query += await buildWhere(params.where)
-        if (params.orderbBy.key.length > 0) {
-            str_query += ' ORDER BY '
-            const joinOrderKey = params.orderbBy.key.map((data) => data).join(', ')
-            str_query += joinOrderKey+' '+params.orderbBy.value
+        if (params.orderbBy != undefined && params.orderbBy != null) {
+            if (params.orderbBy.key.length > 0) {
+                str_query += ' ORDER BY '
+                const joinOrderKey = params.orderbBy.key.map((data) => data).join(', ')
+                str_query += joinOrderKey+' '+params.orderbBy.value
+            }
         }
-        if (params.limit != undefined && params.limit != null && params.limit != '') {
-            str_query += ' LIMIT '+params.limit
+        if (params.limit != undefined && params.limit != null){
+            if (params.limit != undefined && params.limit != null && params.limit != '') {
+                str_query += ' LIMIT '+params.limit
+            }
         }
-        if (params.offset != undefined && params.offset != null && params.offset != '') {
-            str_query += ' OFFSET '+params.offset
+        if (params.offset != undefined && params.offset != null){
+            if (params.offset != undefined && params.offset != null && params.offset != '') {
+                str_query += ' OFFSET '+params.offset
+            }
         }
         try {
             const confDb = await conn.getConn(subject.db)
