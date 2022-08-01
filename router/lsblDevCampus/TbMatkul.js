@@ -1,5 +1,3 @@
-'use strict'
-
 const express = require('express')
 const router = express.Router()
 const TbMatkul = require("../../models/lsblDevCampus/TbMatkul")
@@ -7,7 +5,8 @@ const TbMatkul = require("../../models/lsblDevCampus/TbMatkul")
 // middleware that is specific to this router
 router.use((req, res, next) => {
     console.log('Time: ', Date.now())
-    next()
+    if (req.session.siginFlag == true) { next() }
+    else{ res.redirect('/login') }
 })
 
 router.get("/", async (req,res) => {
@@ -16,15 +15,12 @@ router.get("/", async (req,res) => {
         title_content:'TbMatkul',
         body_content:'../pages/TbMatkul',
         body_content_param:{
-            param: [
-                {key:'field 1',value:'ok'},
-                {key:'field 2',value:'ok'},
-                {key:'field 3',value:'ok'},
-                {key:'field 4',value:'ok'}
-            ]
+            title_content:'TbMatkul'
         },
         default_config: new Buffer(JSON.stringify({default_config:null})).toString('base64'),
-        script:[]
+        script:[
+            'js/TbMatkul.js'
+        ]
     })
 })
 

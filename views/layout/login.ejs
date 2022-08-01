@@ -21,7 +21,8 @@
 			<div class="card">
 				<div class="card-body login-card-body">
 					<p class="login-box-msg">Masuk untuk memulai sesi Anda</p>
-					<form action="login.php" method="post">
+					<% if(message.err){ %><div class="alert alert-danger text-center" role="alert"><%= message.err %></div><% } %>
+					<form action="login" method="post">
 						<div class="input-group mb-3">
 							<input required name="username" type="text" class="form-control" placeholder="Username">
 							<div class="input-group-append">

@@ -5,7 +5,8 @@ const DamageReportImg = require("../../models/lsblCloudm/DamageReportImg")
 // middleware that is specific to this router
 router.use((req, res, next) => {
     console.log('Time: ', Date.now())
-    next()
+    if (req.session.siginFlag == true) { next() }
+    else{ res.redirect('/login') }
 })
 
 router.get("/", async (req,res) => {

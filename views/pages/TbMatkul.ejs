@@ -1,8 +1,50 @@
-
-<h1>TB MATKUL BODY CONTENT</h1>
-
-<ul>
-    <% param.forEach((row) => { %>
-        <li><%= row.key+" : "+row.value %></li>
-    <% }) %>
-</ul>
+<div class="pt-4 pb-4">
+    <div class="container-fluid">
+        <div id="listData" class="card mb-5">
+            <div class="card-header"><%= title_content %></div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>tools</th>
+                                <th>id_matkul</th>
+                                <th>nama_matkul</th>
+                                <th>ket</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div id="formData" class="card mb-5">
+            <div class="card-header">Form add</div>
+            <div class="card-body">
+                <form onsubmit="submitForm(); return false;">
+                    <div class="container-fluid">
+                        <div class="row row-cols-2 mb-3">
+                            <div class="col">
+                                <input name="id_matkul" type="hidden">
+                                <label for="nama_matkul" class="form-label">nama_matkul</label>
+                                <input name="nama_matkul" type="text" class="form-control">
+                            </div>
+                            <div class="col">
+                                <label for="ket" class="form-label">ket</label>
+                                <input name="ket" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button type="submit" class="btn btn-block btn-sm btn-outline-success">Submit</button>
+                                <button onclick="clearForm()" type="reset" class="btn btn-block btn-sm btn-outline-danger">Cancel</button>
+                                <span onclick="callList()" class="btn btn-block btn-sm btn-outline-info">Refresh List</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
