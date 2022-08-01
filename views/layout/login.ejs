@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title><%=title%></title>
+        <link rel="shortcut icon" href="Asset/Picture/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="Asset/Picture/favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" type="text/css" href="fontawesome-free/css/all.min.css">
+		<link rel="stylesheet" type="text/css" href="icheck-bootstrap/icheck-bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="adminlte-dist/css/adminlte.min.css">
+	</head>
+	<body class="hold-transition login-page">
+		<div class="login-box">
+			<div class="login-logo">
+				<a href="#">Selamat Datang Di <b><%=title%></b></a>
+			</div>
+
+			<div class="card">
+				<div class="card-body login-card-body">
+					<p class="login-box-msg">Masuk untuk memulai sesi Anda</p>
+					<form action="login.php" method="post">
+						<div class="input-group mb-3">
+							<input required name="username" type="text" class="form-control" placeholder="Username">
+							<div class="input-group-append">
+								<div class="input-group-text">
+									<span class="fas fa-user"></span>
+								</div>
+							</div>
+						</div>
+						<div class="input-group mb-3">
+							<input required name="password" type="password" class="form-control" placeholder="Password">
+							<div class="input-group-append">
+								<div class="input-group-text">
+									<span class="fas fa-lock"></span>
+								</div>
+							</div>
+						</div>
+						<div class="input-group mb-3">
+							<button class="btn btn-outline-primary btn-block" type="submit">Signin</button>							
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript" src="jquery/jquery.min.js"></script>
+		<script type="text/javascript" src="bootstrap/js/bootstrap.bundle.min.js"></script>
+		<script type="text/javascript" src="adminlte-dist/js/adminlte.min.js"></script>
+		<script>
+			$( document ).ready(function() { 
+                localStorage.clear()
+                sessionStorage.clear()
+            });
+		</script>
+	</body>
+</html>

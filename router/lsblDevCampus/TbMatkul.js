@@ -1,3 +1,5 @@
+'use strict'
+
 const express = require('express')
 const router = express.Router()
 const TbMatkul = require("../../models/lsblDevCampus/TbMatkul")
@@ -9,6 +11,24 @@ router.use((req, res, next) => {
 })
 
 router.get("/", async (req,res) => {
+    res.render('layout/main',{
+        title_page:'Study Node JS',
+        title_content:'TbMatkul',
+        body_content:'../pages/TbMatkul',
+        body_content_param:{
+            param: [
+                {key:'field 1',value:'ok'},
+                {key:'field 2',value:'ok'},
+                {key:'field 3',value:'ok'},
+                {key:'field 4',value:'ok'}
+            ]
+        },
+        default_config: new Buffer(JSON.stringify({default_config:null})).toString('base64'),
+        script:[]
+    })
+})
+
+router.get("/select", async (req,res) => {
     res.json(await TbMatkul.select({
         where:[
             {
@@ -103,6 +123,23 @@ router.get("/update", async (req,res) => {
                 key:'id_matkul',
                 operator:'=',
                 value: 3,
+                andor:''
+            }
+        ]
+    }))
+})
+
+router.get("/updateOrInsert", async (req,res) => {
+    res.json(await TbMatkul.updateOrInsert({ 
+        set: [
+            {key:'nama_matkul',value:'\'UPDATE OR INSERT 2\''},
+            {key:'ket',value:'\'Y\''}
+        ],
+        where:[
+            {
+                key:'id_matkul',
+                operator:'=',
+                value: 0,
                 andor:''
             }
         ]

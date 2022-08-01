@@ -4,12 +4,13 @@ const app = express()
 
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
+app.use(express.static('static'))
+
+app.set("view engine","ejs")
+app.set("views","views")
 
 app.get("/", async (req,res) => {
-    res.json({
-        res:true,
-        msg:'this index of apps'
-    })
+    res.render('layout/login',{title:'Study Node JS'})
 })
 
 const routeDamageReportImg = require("./router/lsblCloudDm/DamageReportImg")

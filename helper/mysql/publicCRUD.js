@@ -98,6 +98,44 @@ const conn = require("./getConn")
             return {err,str_query,data:null}
         }
     }
+
+    insert = async (params,subject) => {
+        let setFields = []
+        let setValues = []
+        params.set.forEach(row => {
+            setFields.push('`'+row.key+'`')
+            setValues.push(row.value)
+        })
+        setFields = setFields.join(',')
+        setValues = setValues.join(',')
+        const str_query = "INSERT INTO "+subject.table+" ("+setFields+") VALUES ("+setValues+")"
+        try {
+            const confDb = await conn.getConn(subject.db)
+            const openDb = await mysql.createConnection(confDb)
+            const [data] = await openDb.execute(str_query,[])
+            openDb.end()
+            return {err:null,str_query,data}
+        } catch (err) {
+            return {err,str_query,data:null}
+        }
+    }
+
+    update = async (params,subject) => {
+        let str_set = []
+        params.set.forEach(row => { str_set.push('`'+row.key+'` = '+row.value)  })
+        str_set = str_set.join(',')
+        const str_where = await buildWhere(params.where)
+        const str_query = "UPDATE "+subject.table+" SET "+str_set+" "+str_where
+        try {
+            const confDb = await conn.getConn(subject.db)
+            const openDb = await mysql.createConnection(confDb)
+            const [data] = await openDb.execute(str_query,[])
+            openDb.end()
+            return {err:null,str_query,data}
+        } catch (err) {
+            return {err,str_query,data:null}
+        }
+    }
 // public function
 
-module.exports = { select, selectCount, paginate, insert }
+module.exports = { select, selectCount, paginate, insert, update }

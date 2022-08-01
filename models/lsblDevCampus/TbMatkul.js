@@ -52,8 +52,18 @@ insert = async (params) => {
 }
 
 update = async (params) => {
+    const result_count = await selectCount(params)
+    if (result_count.result.err != null) { return { params, result:result_count } }
+    if (result_count.result.countRows == 0){ return { params, result:{ err: "data not found!" } } }
     const result = await crud.update(params,{db,table})
     return { params, result }
 }
 
-module.exports = { select, selectCount, selectPluck, paginate, first, find, insert, update }
+updateOrInsert = async (params) => {
+    const result_count = await selectCount(params)
+    if (result_count.result.err != null) { return { params, result:result_count } }
+    if (result_count.result.countRows == 0){ return await insert(params) }
+    else { return await update(params) }
+}
+
+module.exports = { select, selectCount, selectPluck, paginate, first, find, insert, update, updateOrInsert }
