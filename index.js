@@ -6,72 +6,17 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
 app.get("/", async (req,res) => {
-    const DamageReportImg = require("./models/lsblCloudm/DamageReportImg")
-    res.json(await DamageReportImg.select({
-        where:[
-            {
-                key:'string_encode',
-                operator:'=',
-                value:'\'N\'',
-                andor:''
-            }
-        ],
-        orderbBy: { key:['id_damage_img_global'], value:'DESC' },
-        limit:50,
-        offset:150
-    }))
+    res.json({
+        res:true,
+        msg:'this index of apps'
+    })
 })
 
-app.get("/count", async (req,res) => {
-    const DamageReportImg = require("./models/lsblCloudm/DamageReportImg")
-    res.json(await DamageReportImg.selectCount({
-        where:[
-            {
-                key:'string_encode',
-                operator:'=',
-                value:'\'N\'',
-                andor:''
-            }
-        ]
-    }))
-})
+const routeDamageReportImg = require("./router/lsblCloudDm/DamageReportImg")
+const routeTbMatkul = require("./router/lsblDevCampus/TbMatkul")
 
-app.get("/paginate", async (req,res) => {
-    const DamageReportImg = require("./models/lsblCloudm/DamageReportImg")
-    res.json(await DamageReportImg.paginate({
-        where:[
-            {
-                key:'string_encode',
-                operator:'=',
-                value:'\'N\'',
-                andor:''
-            }
-        ],
-        orderbBy: { key:['id_damage_img_global'], value:'DESC' },
-        limit:50,
-        page:3
-    }))
-})
-
-app.get("/first", async (req,res) => {
-    const DamageReportImg = require("./models/lsblCloudm/DamageReportImg")
-    res.json(await DamageReportImg.first({
-        where:[
-            {
-                key:'string_encode',
-                operator:'=',
-                value:'\'N\'',
-                andor:''
-            }
-        ],
-        orderbBy: { key:['id_damage_img_global'], value:'DESC' }
-    }))
-})
-
-app.get("/find", async (req,res) => {
-    const DamageReportImg = require("./models/lsblCloudm/DamageReportImg")
-    res.json(await DamageReportImg.find({ primary: 1471 }))
-})
+app.use('/DamageReportImg', routeDamageReportImg)
+app.use('/TbMatkul', routeTbMatkul)
 
 app.listen(server_port,()=>{
     console.log('run the service ...! On port : '+server_port)

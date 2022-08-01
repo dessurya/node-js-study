@@ -13,6 +13,17 @@ selectCount = async (params) => {
     return { params, result }
 }
 
+selectPluck = async (params) => {
+    let pluck = []
+    let result = await crud.select(params,{db,table})
+    result.data.forEach(row => {
+        pluck.push(row[params.field])
+    });
+    result.data = pluck
+    result.field = params.field
+    return { params, result }
+}
+
 paginate = async (params) => {
     params.offset = (params.page-1)*params.limit
     const result_select = await crud.select(params,{db,table})
@@ -35,4 +46,4 @@ find = async (params) => {
     return { params, result:result.result }
 }
 
-module.exports = { select, selectCount, paginate, first, find }
+module.exports = { select, selectCount, selectPluck, paginate, first, find }
