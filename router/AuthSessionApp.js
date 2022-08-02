@@ -25,7 +25,10 @@ router.post("/", async (req,res) => {
     if (getUser.result.err == null && (getUser.result.data != null && getUser.result.data != undefined) ) {
         req.flash('success', 'welcome '+getUser.result.data.username+'!')
         req.session.siginFlag = true
-        req.session.siginInfo = getUser.result.data
+        req.session.siginInfo = {
+            username:getUser.result.data.username,
+            nama:getUser.result.data.nama
+        }
         res.redirect('/')
     }
     else{

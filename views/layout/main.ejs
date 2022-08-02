@@ -61,7 +61,7 @@
 
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" onclick="localStorage.clear();sessionStorage.clear();" href="logout.php" role="button" alt="sign-out" title="sign out">
+                        <a class="nav-link" onclick="localStorage.clear();sessionStorage.clear();" href="/out" role="button" alt="sign-out" title="sign out">
                             <i class="fas fa-sign-out-alt"></i>
                         </a>
                     </li>
@@ -75,10 +75,15 @@
                 <div class="sidebar">
                     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                         <div class="image"><img src="adminlte-dist/img/avatar5.png" class="img-circle elevation-2" alt="User Image"></div>
-                        <div class="info"><a href="#" class="d-block">TEST STATIC</a></div>
+                        <div class="info"><a href="#" class="d-block"><%=userLive.nama%></a></div>
                     </div>
 
-                    <nav class="mt-2"><ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false"></ul></nav>
+                    <nav class="mt-2">
+                        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                            <li class="nav-item"><a href="/" class="nav-link">DASHBOARD</a></li>
+                            <li class="nav-item"><a href="/TbMatkul" class="nav-link">MATA KULIAH</a></li>
+                        </ul>
+                    </nav>
                 </div>
             </aside>
 
@@ -93,7 +98,11 @@
                     </div>
                 </section>
                 <section class="content">
-                    <div class="container-fluid"><%- include(body_content, body_content_param) %></div>
+                    <div class="container-fluid">
+                        <% if (body_content != null) { %>
+                            <%- include(body_content, body_content_param) %>
+                        <% } %>
+                    </div>
                 </section>
 			</div>
             <footer class="main-footer"><div class="float-right d-none d-sm-block"><b>Version</b> 3.1.0-pre</div><strong>Copyright &copy; 2014-2020 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.</footer>

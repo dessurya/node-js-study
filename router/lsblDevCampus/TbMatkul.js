@@ -67,20 +67,18 @@ router.get("/pluck", async (req,res) => {
     }))
 })
 
-router.get("/paginate", async (req,res) => {
-    res.json(await TbMatkul.paginate({
-        where:[
-            {
-                key:'ket',
-                operator:'=',
-                value:'\'Y\'',
-                andor:''
-            }
-        ],
-        orderbBy: { key:['id_matkul'], value:'DESC' },
-        limit:50,
-        page:1
-    }))
+router.get("/paginate/:encripty", async (req,res) => {
+    let props = { where:[], orderbBy: { key:['id_matkul'], value:'DESC' }, limit:10, page:1 }
+    const input = JSON.parse(Buffer.from(req.params.encripty, 'base64').toString('ascii'))
+    for(const [key, val] of Object.entries(input)){
+        if (key == 'page' || key == 'limit') { props[key] = val }
+        if (key == 'nama_matkul' || key == 'ket') { props.where.push({ key:key, operator:'LIKE', value:'\'%'+val+'%\'', andor:'AND' }) }
+    }
+    props.where[props.where.length-1].andor = ''
+    props.orderbBy.key = [input.order_by]
+    props.orderbBy.value = [input.order_by_value]
+    const getPaginate = await TbMatkul.paginate(props)
+    res.json(getPaginate)
 })
 
 router.get("/first", async (req,res) => {
@@ -97,18 +95,18 @@ router.get("/first", async (req,res) => {
     }))
 })
 
-router.get("/find", async (req,res) => {
-    res.json(await TbMatkul.find({ primary: 4 }))
+router.get("/find/:id_matkul", async (req,res) => {
+    res.json(await TbMatkul.find({ primary: req.params.id_matkul }))
 })
 
-router.get("/insert", async (req,res) => {
+router.post("/insert", async (req,res) => {
     res.json(await TbMatkul.insert({ set: [
         {key:'nama_matkul',value:'\'INSERT 1\''},
         {key:'ket',value:'\'Y\''}
     ] }))
 })
 
-router.get("/update", async (req,res) => {
+router.put("/update", async (req,res) => {
     res.json(await TbMatkul.update({ 
         set: [
             {key:'nama_matkul',value:'\'UPDATE 1\''},
@@ -125,21 +123,23 @@ router.get("/update", async (req,res) => {
     }))
 })
 
-router.get("/updateOrInsert", async (req,res) => {
-    res.json(await TbMatkul.updateOrInsert({ 
+router.post("/updateOrInsert", async (req,res) => {
+    let id_matkul = req.body.id_matkul
+    if (id_matkul == '' || id_matkul == null || id_matkul == undefined) { id_matkul = 0}
+    const result = await TbMatkul.updateOrInsert({ 
         set: [
-            {key:'nama_matkul',value:'\'UPDATE OR INSERT 2\''},
-            {key:'ket',value:'\'Y\''}
+            {key:'nama_matkul',value:'\''+req.body.nama_matkul+'\''},
+            {key:'ket',value:'\''+req.body.ket+'\''}
         ],
-        where:[
-            {
-                key:'id_matkul',
-                operator:'=',
-                value: 0,
-                andor:''
-            }
-        ]
-    }))
+        where:[ { key:'id_matkul', operator:'=', value: id_matkul, andor:'' } ]
+    })
+    if (result.result.data.insertId == 0) { result.result.data.insertId = id_matkul }
+    res.json(result)
+})
+
+router.delete("/delete/:id_matkul", async (req,res) => {
+    const result = await TbMatkul.deleteRows({ where:[ { key:'id_matkul', operator:'=', value:req.params.id_matkul, andor:'' } ] })
+    res.json(result)
 })
 
 module.exports = router

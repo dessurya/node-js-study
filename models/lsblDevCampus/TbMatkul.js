@@ -66,4 +66,9 @@ updateOrInsert = async (params) => {
     else { return await update(params) }
 }
 
-module.exports = { select, selectCount, selectPluck, paginate, first, find, insert, update, updateOrInsert }
+deleteRows = async (params) => {
+    const result = await crud.deleteRows(params,{db,table})
+    return { params, result }
+}
+
+module.exports = { select, selectCount, selectPluck, paginate, first, find, insert, update, updateOrInsert, deleteRows }

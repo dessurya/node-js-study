@@ -14,7 +14,15 @@ app.use(session({
 	saveUninitialized: true
 }))
 app.use(function(req, res, next){
+    // for devlopment by pass session login
+    // req.session.siginFlag = true
+    // req.session.siginInfo = {
+    //     nama:'BY PASS'
+    // }
+    // for devlopment by pass session login
+
     res.locals.message = req.flash()
+    res.locals.userLive = req.session.siginInfo
     next()
 })
 
@@ -23,7 +31,14 @@ app.set("views","views")
 
 app.get("/", async (req,res) => {
     if (req.session.siginFlag == true) { 
-        res.json({ loginStore:req.session })
+        res.render('layout/main',{
+            title_page:'Study Node JS',
+            title_content:'Dashboard',
+            body_content:null,
+            body_content_param:null,
+            default_config: null,
+            script:[]
+        })
     }
     else{ res.redirect('/login') }
 })

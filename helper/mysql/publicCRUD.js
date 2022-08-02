@@ -62,7 +62,7 @@ const conn = require("./getConn")
     }
     
     paginate = (params,getData,countAllData) => {
-        let to = params.offset+params.limit
+        let to = parseInt(params.offset)+parseInt(params.limit)
         if (to > countAllData.countRows) { to = countAllData.countRows }
         let max_page = Math.ceil(countAllData.countRows/params.limit)
         if (max_page == 0) { max_page = 1}
@@ -136,6 +136,20 @@ const conn = require("./getConn")
             return {err,str_query,data:null}
         }
     }
+
+    deleteRows = async (params,subject) => {
+        const str_where = await buildWhere(params.where)
+        const str_query = "DELETE FROM "+subject.table+" "+str_where
+        try {
+            const confDb = await conn.getConn(subject.db)
+            const openDb = await mysql.createConnection(confDb)
+            const [data] = await openDb.execute(str_query,[])
+            openDb.end()
+            return {err:null,str_query,data}
+        } catch (err) {
+            return {err,str_query,data:null}
+        }
+    }
 // public function
 
-module.exports = { select, selectCount, paginate, insert, update }
+module.exports = { select, selectCount, paginate, insert, update, deleteRows }
