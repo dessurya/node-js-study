@@ -2,12 +2,14 @@ const server_port = 7070
 const express = require("express")
 const session = require('express-session')
 const flash = require('connect-flash')
+const cors = require('cors')
 const app = express()
 
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(express.static('static'))
 app.use(flash())
+app.use(cors())
 app.use(session({
 	secret: 'secret',
 	resave: true,
@@ -15,10 +17,10 @@ app.use(session({
 }))
 app.use(function(req, res, next){
     // for devlopment by pass session login
-    // req.session.siginFlag = true
-    // req.session.siginInfo = {
-    //     nama:'BY PASS'
-    // }
+    req.session.siginFlag = true
+    req.session.siginInfo = {
+        nama:'BY PASS'
+    }
     // for devlopment by pass session login
 
     res.locals.message = req.flash()
@@ -28,6 +30,20 @@ app.use(function(req, res, next){
 
 app.set("view engine","ejs")
 app.set("views","views")
+
+app.post("/login", async (req,res) => {
+    res.json({
+        res:true,
+        token:{
+            barear: 'blablablabla_yoyoo',
+            livetime: '2022-12-31'
+        },
+        user:{
+            username:'admin',
+            name:'admin'
+        }
+    })
+})
 
 app.get("/", async (req,res) => {
     if (req.session.siginFlag == true) { 
